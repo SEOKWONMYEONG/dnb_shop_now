@@ -7,11 +7,20 @@ include $_SERVER['DOCUMENT_ROOT']."/common.php";
 $sql_banner_main = "SELECT * FROM banner_main";
 $result_banner_main = mysqli_query($conn,$sql_banner_main);
 
-// 결과를 PHP 배열로 변환하여 JSON 형식으로 인코딩
 $banner_main = array();
 while ($row = mysqli_fetch_assoc($result_banner_main)) {
     $banner_main[] = $row;
 }
+
+// 상품 가져오기
+$sql_product = "SELECT * FROM product";
+$result_product = mysqli_query($conn,$sql_product);
+
+$productList = array();
+while ($row = mysqli_fetch_assoc($result_product)) {
+    $productList[] = $row;
+}
+
 ?>
 
 <!doctype html>
@@ -21,13 +30,34 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Dal & Byeol</title>
-
+    <style>
+        .banner {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 86px;
+            overflow: hidden;
+            top: -86px;
+        }
+    </style>
+    <script>
+    window.onload = function() {
+      var banner = document.querySelector('.banner');
+      banner.style.top = '0';
+    };
+  </script>
 </head>
 <body>
 
+<div class="banner" style="text-align: center; background-color: #FF5757">
+        <a href="/">
+            <img src="/images/banner_top/top_banner.png">
+        </a>
+</div>
+
 
 <div class="w-100 pt-lg-3 pb-lg-1 bg-white">
-    <div class="container px-lg-5 text-lg-end text-right">
+    <div class="container-xl px-lg-1 text-lg-end text-right">
         <span style="font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"> LogIn &middot; </span>
         <span style="font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"> SignUp &middot; </span>
         <span style="font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"> CustomerService  | </span>
@@ -40,8 +70,9 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-    <div class="container px-4 px-lg-5 ">
-        <a class="navbar-brand" href="#!" style="font-size: xx-large;font-weight: bold">Dal & Byeol</a>
+    <div class="container-xl px-4 px-lg-1 ">
+<!--        <a class="navbar-brand" href="#!" style="font-size: xx-large;font-weight: bold">Dal & Byeol</a>-->
+        <img src="/images/logo.png">
         <div class="w-100 text-lg-center">
             <div class="input-group">
                 <div class="w-50 form-outline" style="margin-left: 25%" >
@@ -67,24 +98,25 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
     </div>
 </nav>
 
-<div class="bg-dark w-100">
+<div class="bg-dark w-100 border-bottom">
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
-            <?for ($i=0;$i < count($banner_main);$i++){?>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<?=$i?>" <?=($i==0)?("class='active  aria-current='true'"):("")?> aria-label="Slide "<?=$i?>"></button>
-            <?}?>
+
+            <?php for( $i=0; $i<count($banner_main); $i++){?>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<?= $i ?>" <?= ($i==0)?("class='active' aria-current='true'"):("") ?> aria-label="Slide <?= ($i+1) ?>"></button>
+            <?php }?>
         </div>
 
         <div class="carousel-inner">
 
-            <?for ($i=0;$i < count($banner_main);$i++){?>
+            <?php for ($i=0;$i < count($banner_main);$i++){?>
             <div class="carousel-item <?=($i==0)?("active"):("")?>">
-                <img src="/images/<?=$banner_main[$i]['filename']?>" class="mx-auto d-block" alt="...">
+                <img src="/images/banner_main/<?= $banner_main[$i]['filename'] ?>" class="mx-auto d-block" alt="...">
                 <div class="carousel-caption d-none d-md-block">
-                    <p><?=$banner_main[$i]['text']?></p>
+                    <p><?= $banner_main[$i]['text'] ?></p>
                 </div>
             </div>
-            <?}?>
+            <?php }?>
         </div>
 
 <!--        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">-->
@@ -105,7 +137,7 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container px-4 px-lg-5">
+    <div class="container-xl px-4 px-lg-1">
         <div class="w-100 bg-light">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Kpop</a></li>
@@ -117,20 +149,24 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
     </div>
 </nav>
 
+
 <section class="py-2">
-    <div class="container px-4 px-lg-5 mt-5">
+    <div class="container-xl px-4 px-lg-1 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <?php for($i=0; $i<count($productList);$i++){?>
             <div class="col mb-5">
                 <div class="card h-100">
+                    <!-- Sale badge-->
+                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                     <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                    <img class="card-img-top" src="/images/product/<?=$productList[$i]['filename']?>" alt="..." />
                     <!-- Product details-->
                     <div class="card-body p-4">
                         <div class="text-center">
                             <!-- Product name-->
-                            <h5 class="fw-bolder">Fancy Product</h5>
+                            <h5 class="fw-bolder"><?=$productList[$i]['name']?></h5>
                             <!-- Product price-->
-                            $40.00 - $80.00
+                            ₱<?=number_format($productList[$i]['price'])?>
                         </div>
                     </div>
                     <!-- Product actions-->
@@ -139,190 +175,14 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
                     </div>
                 </div>
             </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Special Item</h5>
-                            <!-- Product reviews-->
-                            <div class="d-flex justify-content-center small text-warning mb-2">
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                            </div>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">$20.00</span>
-                            $18.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Sale Item</h5>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">$50.00</span>
-                            $25.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Popular Item</h5>
-                            <!-- Product reviews-->
-                            <div class="d-flex justify-content-center small text-warning mb-2">
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                            </div>
-                            <!-- Product price-->
-                            $40.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Sale Item</h5>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">$50.00</span>
-                            $25.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Fancy Product</h5>
-                            <!-- Product price-->
-                            $120.00 - $280.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Special Item</h5>
-                            <!-- Product reviews-->
-                            <div class="d-flex justify-content-center small text-warning mb-2">
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                            </div>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">$20.00</span>
-                            $18.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Popular Item</h5>
-                            <!-- Product reviews-->
-                            <div class="d-flex justify-content-center small text-warning mb-2">
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                            </div>
-                            <!-- Product price-->
-                            $40.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
+            <?php }?>
         </div>
     </div>
 </section>
 
 <footer class="py-5 bg-dark">
 
-    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
+    <div class="container-xl"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
 </footer>
 
 </body>
