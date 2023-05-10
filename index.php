@@ -58,21 +58,21 @@ while ($row = mysqli_fetch_assoc($result_product)) {
 
 <div class="w-100 pt-lg-3 pb-lg-1 bg-white">
     <div class="container-xl px-lg-1 text-lg-end text-right">
-        <span style="font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"> LogIn &middot; </span>
-        <span style="font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"> SignUp &middot; </span>
-        <span style="font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"> CustomerService  | </span>
+        <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> LogIn </span></a> &middot;
+        <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> SignUp </span></a> &middot;
+        <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> CustomerService </span></a> |
 
-        <a href="#!" ><img style="width: 25px;height: 25px" src="/images/heart.svg"/></a>
-        <a href="#!" ><img style="width: 25px;height: 25px" src="/images/truck.svg"/></a>
-        <a href="#!" ><img style="width: 25px;height: 25px" src="/images/cart.svg"/></a>
-        <a href="#!" ><img style="width: 25px;height: 25px" src="/images/human.svg"/></a>
+        <a href="preparing.php" ><img style="width: 25px;height: 25px" src="/images/heart.svg"/></a>
+        <a href="preparing.php" ><img style="width: 25px;height: 25px" src="/images/truck.svg"/></a>
+        <a href="preparing.php" ><img style="width: 25px;height: 25px" src="/images/cart.svg"/></a>
+        <a href="preparing.php" ><img style="width: 25px;height: 25px" src="/images/human.svg"/></a>
     </div>
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
     <div class="container-xl px-4 px-lg-1 ">
 <!--        <a class="navbar-brand" href="#!" style="font-size: xx-large;font-weight: bold">Dal & Byeol</a>-->
-        <img src="/images/logo.png">
+        <a href="/"><img src="/images/logo.png"></a>
         <div class="w-100 text-lg-center">
             <div class="input-group">
                 <div class="w-50 form-outline" style="margin-left: 25%" >
@@ -132,18 +132,18 @@ while ($row = mysqli_fetch_assoc($result_product)) {
 
 
 
-<div class="w-100 text-lg-center mt-lg-5">
-    <h2 style="font-weight: bold;"> Welcome To Dal&Byeol</h2>
-</div>
+<!--<div class="w-100 text-lg-center mt-lg-5">-->
+<!--    <h2 style="font-weight: bold;"> Welcome To Dal&Byeol</h2>-->
+<!--</div>-->
 
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-lg navbar-light mt-lg-1">
     <div class="container-xl px-4 px-lg-1">
-        <div class="w-100 bg-light">
+        <div class="w-100" style="font-weight: bold;font-family: 'NanumGothic'">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Kpop</a></li>
+                <li class="nav-item"><a class="nav-link active text-warning" aria-current="page" href="#!">Korea Pasabuy</a></li>
+                <li class="nav-item"><a class="nav-link " aria-current="page" href="#!">Kpop</a></li>
                 <li class="nav-item"><a class="nav-link " aria-current="page" href="#!">Kmart</a></li>
                 <li class="nav-item"><a class="nav-link " aria-current="page" href="#!">Kmask</a></li>
-                <li class="nav-item"><a class="nav-link  text-warning" aria-current="page" href="#!">Korea Pasabuy</a></li>
             </ul>
         </div>
     </div>
@@ -151,13 +151,15 @@ while ($row = mysqli_fetch_assoc($result_product)) {
 
 
 <section class="py-2">
-    <div class="container-xl px-4 px-lg-1 mt-5">
+    <div class="container-xl px-4 px-lg-1 mt-2">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <?php for($i=0; $i<count($productList);$i++){?>
             <div class="col mb-5">
                 <div class="card h-100">
+                    <?php if ($productList[$i]['isSale']=="yes"){?>
                     <!-- Sale badge-->
                     <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                    <?php }?>
                     <!-- Product image-->
                     <img class="card-img-top" src="/images/product/<?=$productList[$i]['filename']?>" alt="..." />
                     <!-- Product details-->
@@ -167,11 +169,15 @@ while ($row = mysqli_fetch_assoc($result_product)) {
                             <h5 class="fw-bolder"><?=$productList[$i]['name']?></h5>
                             <!-- Product price-->
                             ₱<?=number_format($productList[$i]['price'])?>
+                            <?php if ($productList[$i]['isSale']=="yes"){?>
+                            -
+                            <?=number_format($productList[$i]['saleprice'])?>
+                            <?php }?>
                         </div>
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/product/productDetail.php?productCode=<?=$productList[$i]['idx']?>">View options</a></div>
                     </div>
                 </div>
             </div>
