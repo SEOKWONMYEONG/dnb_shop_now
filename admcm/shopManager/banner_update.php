@@ -3,14 +3,11 @@
 include $_SERVER['DOCUMENT_ROOT'] . "/common.php";
 
 // 메인배너 가져오기
-$sql_banner_main = "SELECT * FROM banner_main";
+$sql_banner_main = "SELECT * FROM banner_main where idx='".$_GET['idx']."'";
 $result_banner_main = mysqli_query($conn,$sql_banner_main);
 
-// 결과를 PHP 배열로 변환하여 JSON 형식으로 인코딩
-$banner_main = array();
-while ($row = mysqli_fetch_assoc($result_banner_main)) {
-    $banner_main[] = $row;
-}
+$mainBannerDetail = array();
+$mainBannerDetail = mysqli_fetch_assoc($result_banner_main);
 
 ?>
 
@@ -41,46 +38,63 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
 
 </div>
 
-<div class="container-xl mt-4">
-    <h2>메인배너 ( 1920 x 600 )</h2>
-    <table width="100%" border="0" cellspacing="0" cellpadding="2">
-        <tr>
-            <td style="font-weight: bold;">Main Banner List</td>
-            <td align="right">
-                <button onclick="window.location.href='./banner_add.php'" >Add Banner</button>
-            </td>
-        </tr>
-    </table>
-    <table width="100%">
-        <tr style="border: blanchedalmond 2px solid; text-align: center;height: 50px;" >
-            <th width="100x">Banner Code</th>
-            <th width="700px">Banner Image</th>
-            <th width="100px">Filename</th>
-            <th width="auto">Function</th>
-        </tr>
-        <?php for ($i=0;$i < count($banner_main);$i++){?>
-            <tr style="border: blanchedalmond 2px solid; text-align: center;" >
-                <input type="hidden" value="<?=$banner_main[$i]['idx']?>"/>
-                <td><?=$banner_main[$i]['code']?></td>
+<form id="bannerForm" method="post" enctype="multipart/form-data">
+    <div class="container-xl mt-4">
+        <h2>메인배너 ( 1920 x 600 )</h2>
+        <table class="BannerInfo" width="100%" border="1" cellspacing="1" cellpadding="2">
+            <input type="hidden" name="idx" value="<?=$mainBannerDetail['idx']?>">
+            <tr>
                 <td>
-                    <img style="width: 500px;" src="/images/banner_main/<?=$banner_main[$i]['filename']?>"/>
+                    Banner Code
                 </td>
                 <td>
-                    <?=$banner_main[$i]['filename']?>
-                </td>
-                <td>
-                    <button onclick="window.location.href='./banner_update.php?idx=<?=$banner_main[$i]['idx']?>'">수정</button>
-                    <button onclick="submitForm(<?=$banner_main[$i]['idx']?>,'main_banner_delete')">삭제</button>
+                    <input type="text" name="code" value="<?=$mainBannerDetail['code']?>" readonly>
                 </td>
             </tr>
-        <?php }?>
-    </table>
-</div>
+            <tr>
+                <td>
+                    Image
+                </td>
+                <td>
+                    <input type="hidden" name="filename_ori" value="<?=$mainBannerDetail['filename']?>">
+                    <?=$mainBannerDetail['filename']?>
+                    <input type="file" name="filename"> (사이즈 - PC:1920x600)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Text
+                </td>
+                <td>
+                    <textarea name="text" style="width: 100%;" ><?=$mainBannerDetail['text']?></textarea>
+                </td>
+            </tr>
+        </table>
+        <div class="mt-5" style="width: 100%; text-align: center;">
+            <a class="button" onclick="submitForm(<?=$mainBannerDetail['idx']?>)">UPDATE</a>
+            <a href="index.php" class="button">LIST</a>
+        </div>
+    </div>
+</form>
+<style>
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
 <script>
-    function submitForm(idx,mode) {
+
+
+    function submitForm(idx) {
         var form = $("#bannerForm");
         var formData = new FormData(form[0]);
-        formData.append("mode", mode);
+        formData.append("mode", "main_banner_update");
         formData.append("idx", idx);
 
         $.ajax({
@@ -102,3 +116,4 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
         });
     }
 </script>
+

@@ -28,7 +28,7 @@
                 <a class="nav-link" href="/admcm/shopManager">상점 관리</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/admcm">상품 관리</a>
+                <a class="nav-link" href="/admcm/productManager">상품 관리</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admcm">고객 관리</a>
