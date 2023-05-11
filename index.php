@@ -14,6 +14,10 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
 
 // 상품 가져오기
 $sql_product = "SELECT * FROM product";
+if (isset($_GET['category'])){
+    $sql_product = $sql_product." where category=".$_GET['category'];
+}
+
 $result_product = mysqli_query($conn,$sql_product);
 
 $productList = array();
@@ -140,10 +144,10 @@ while ($row = mysqli_fetch_assoc($result_product)) {
     <div class="container-xl px-4 px-lg-1">
         <div class="w-100" style="font-weight: bold;font-family: 'NanumGothic'">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active text-warning" aria-current="page" href="#!">Korea Pasabuy</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="#!">Kpop</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="#!">Kmart</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="#!">Kmask</a></li>
+                <li class="nav-item"><a class="nav-link active text-warning" aria-current="page" href="/">Korea Pasabuy</a></li>
+                <li class="nav-item"><a class="nav-link " aria-current="page" href="/?category=100">Kpop</a></li>
+                <li class="nav-item"><a class="nav-link " aria-current="page" href="/?category=200">Kmart</a></li>
+                <li class="nav-item"><a class="nav-link " aria-current="page" href="/?category=300">Kmask</a></li>
             </ul>
         </div>
     </div>
