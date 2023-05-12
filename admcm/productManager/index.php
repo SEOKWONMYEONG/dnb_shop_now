@@ -3,82 +3,90 @@
 include $_SERVER['DOCUMENT_ROOT'] . "/common.php";
 
 // 메인배너 가져오기
-$sql_banner_main = "SELECT * FROM banner_main";
-$result_banner_main = mysqli_query($conn,$sql_banner_main);
+$sql_product = "SELECT * FROM product";
+$result_product = mysqli_query($conn,$sql_product);
 
 // 결과를 PHP 배열로 변환하여 JSON 형식으로 인코딩
-$banner_main = array();
-while ($row = mysqli_fetch_assoc($result_banner_main)) {
-    $banner_main[] = $row;
+$productList = array();
+while ($row = mysqli_fetch_assoc($result_product)) {
+    $productList[] = $row;
 }
 
 ?>
 
 <div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/admcm">달앤별</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/admcm/shopManager">상점 관리</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admcm">상품 관리</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admcm">고객 관리</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admcm">설정</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <?php include "../header.php"?>
 
 </div>
 
-<div class="container-xl mt-4">
-    <h2>메인배너 ( 1920 x 600 )</h2>
-    <table width="100%" border="0" cellspacing="0" cellpadding="2">
-        <tr>
-            <td style="font-weight: bold;">Main Banner List</td>
-            <td align="right">
-                <button onclick="window.location.href='./banner_add.php'" >Add Banner</button>
-            </td>
-        </tr>
-    </table>
-    <table width="100%">
-        <tr style="border: blanchedalmond 2px solid; text-align: center;height: 50px;" >
-            <th width="100x">Banner Code</th>
-            <th width="700px">Banner Image</th>
-            <th width="100px">Filename</th>
-            <th width="auto">Function</th>
-        </tr>
-        <?php for ($i=0;$i < count($banner_main);$i++){?>
-            <tr style="border: blanchedalmond 2px solid; text-align: center;" >
-                <input type="hidden" value="<?=$banner_main[$i]['idx']?>"/>
-                <td><?=$banner_main[$i]['code']?></td>
-                <td>
-                    <img style="width: 500px;" src="/images/banner_main/<?=$banner_main[$i]['filename']?>"/>
-                </td>
-                <td>
-                    <?=$banner_main[$i]['filename']?>
-                </td>
-                <td>
-                    <button onclick="window.location.href='./banner_update.php?idx=<?=$banner_main[$i]['idx']?>'">수정</button>
-                    <button onclick="submitForm(<?=$banner_main[$i]['idx']?>,'main_banner_delete')">삭제</button>
+<div class="container-xxl px-5 mt-4">
+    <h2>Product List</h2>
+    <div class="w-100" style="text-align: center;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+            <tr>
+                <td align="right">
+                    <button onclick="window.location.href='./product_add.php'" >Add Product</button>
                 </td>
             </tr>
-        <?php }?>
-    </table>
+        </table>
+        <table width="100%" border="1" cellspacing="0" cellpadding="2">
+            <tr>
+                <td>
+                    Product Category
+                </td>
+                <td>
+                    <button>검색</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Product Name
+                </td>
+                <td>
+                    <input type="text" placeholder="Product Name">
+                    <button>검색</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="w-100 mt-4" style="text-align: center;">
+        <table width="100%" border="1" cellspacing="0" cellpadding="2">
+            <tr style="border: blanchedalmond 2px solid; text-align: center;height: 50px;" >
+                <th width="200px">Image</th>
+                <th width="150px">Code</th>
+                <th width="150px">Category</th>
+                <th width="400px">Name</th>
+                <th width="150px">Price</th>
+                <th width="150px">Sale Price</th>
+                <th width="150px">Currency</th>
+                <th width="auto">Function</th>
+
+            </tr>
+            <?php for ($i=0;$i < count($productList);$i++){?>
+                <tr style="border: blanchedalmond 2px solid; text-align: center;" >
+                    <input type="hidden" value="<?=$productList[$i]['idx']?>"/>
+                    <td>
+                        <img style="width: 100px;" src="/images/product/<?=$productList[$i]['filename']?>"/>
+                    </td>
+                    <td><?=$productList[$i]['code']?></td>
+                    <td><?=$productList[$i]['category']?></td>
+                    <td><?=$productList[$i]['name']?></td>
+                    <td><?=$productList[$i]['price']?></td>
+                    <td><?=$productList[$i]['saleprice']?></td>
+                    <td><?=$productList[$i]['currency']?></td>
+                    <td>
+                        <button onclick="window.location.href='./product_update.php?idx=<?=$productList[$i]['idx']?>'">수정</button>
+                        <button onclick="submitForm(<?=$productList[$i]['idx']?>,'product_delete')">삭제</button>
+                    </td>
+                </tr>
+            <?php }?>
+        </table>
+    </div>
 </div>
 <script>
     function submitForm(idx,mode) {
-        var form = $("#bannerForm");
+        var form = $("#productForm");
         var formData = new FormData(form[0]);
         formData.append("mode", mode);
         formData.append("idx", idx);

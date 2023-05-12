@@ -3,6 +3,15 @@
 // DB 연결
 include $_SERVER['DOCUMENT_ROOT']."/common.php";
 
+if ($device == "mobile"){
+    header("Location: /m/index.php");
+}
+if(isset($_GET['device'])){
+    if ($_GET['device'] == "mobile"){
+        header("Location: /m/index.php");
+    }
+}
+
 // 메인배너 가져오기
 $sql_banner_main = "SELECT * FROM banner_main";
 $result_banner_main = mysqli_query($conn,$sql_banner_main);

@@ -24,3 +24,31 @@ include $_SERVER['DOCUMENT_ROOT']."/config/dbcon.php";
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic.css" rel="stylesheet">
 <!--모름-->
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+<?php
+// 접속 디바이스 종류 확인
+function isMobile() {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+    $mobile_agents = Array(
+        "iphone", "ipod", "ipad", "android", "blackberry",
+        "opera mini", "windows ce", "symbian", "palm", "windows phone",
+        "iemobile", "mobile", "pda"
+    );
+
+    foreach ($mobile_agents as $device) {
+        if (stripos($user_agent, $device)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+if (isMobile()) {
+    $device = "mobile";
+} else {
+    $device = "pc";
+}
+
+?>
