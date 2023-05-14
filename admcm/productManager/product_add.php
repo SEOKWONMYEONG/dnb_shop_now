@@ -1,6 +1,15 @@
 <?php
 
 include $_SERVER['DOCUMENT_ROOT'] . "/common.php";
+
+// 카테고리 가져오기
+$sql_category = "SELECT * FROM category";
+$result_category = mysqli_query($conn,$sql_category);
+
+$categorytList = array();
+while ($row = mysqli_fetch_assoc($result_category)) {
+    $categorytList[] = $row;
+}
 ?>
 
 <div>
@@ -24,7 +33,12 @@ include $_SERVER['DOCUMENT_ROOT'] . "/common.php";
                     <tr>
                         <td>Category</td>
                         <td>
-                            <input type="text" name="category" value="">
+                            <select name="category">
+                            <?php foreach ($categorytList as $category): ?>
+                                <option value="<?=$category['category_code']?>"><?php echo $category['category_name']; ?></option>
+                            <?php endforeach; ?>
+                            </select>
+
                         </td>
                     </tr>
                     <tr>

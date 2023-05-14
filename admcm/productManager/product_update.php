@@ -9,6 +9,15 @@ $result_product = mysqli_query($conn,$sql_product);
 $productDetail = array();
 $productDetail = mysqli_fetch_assoc($result_product);
 
+// 카테고리 가져오기
+$sql_category = "SELECT * FROM category";
+$result_category = mysqli_query($conn,$sql_category);
+
+$categorytList = array();
+while ($row = mysqli_fetch_assoc($result_category)) {
+    $categorytList[] = $row;
+}
+
 ?>
 
 <div>
@@ -33,7 +42,12 @@ $productDetail = mysqli_fetch_assoc($result_product);
                     <tr>
                         <td>Category</td>
                         <td>
-                            <input type="text" name="category" value="<?=$productDetail['category']?>">
+                            <select name="category">
+                                <?php foreach ($categorytList as $category): ?>
+                                    <option value="<?=$category['category_code']?>" <?php if ($productDetail['category'] === $category['category_code']) echo "selected"; ?>><?php echo $category['category_name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+
                         </td>
                     </tr>
                     <tr>

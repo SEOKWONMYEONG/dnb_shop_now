@@ -27,6 +27,14 @@ $batchDetail = array();
 $batchDetail = mysqli_fetch_assoc($result_batch);
 
 
+// 카테고리 가져오기
+$sql_category = "SELECT * FROM category";
+$result_category = mysqli_query($conn,$sql_category);
+
+$categorytList = array();
+while ($row = mysqli_fetch_assoc($result_category)) {
+    $categorytList[] = $row;
+}
 ?>
 
 
@@ -126,9 +134,9 @@ $batchDetail = mysqli_fetch_assoc($result_batch);
 
         <div class="collapse navbar-collapse text-lg-end" id="navbarSupportedContent">
             <ul class="navbar-nav me-4o mb-2 mb-lg-0 ms-lg-auto ">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" style="font-family: 'NanumGothic';font-weight: bold;" href="#!">Facebook</a></li>
-                <li class="nav-item"><a class="nav-link" style="font-family: 'NanumGothic';font-weight: bold;" href="#!">Instagram</a></li>
-                <li class="nav-item"><a class="nav-link" style="font-family: 'NanumGothic';font-weight: bold;" href="#!">Coummunity</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" style="font-family: 'NanumGothic';font-weight: bold;" href="https://www.facebook.com/dalandbyeol">Facebook</a></li>
+                <li class="nav-item"><a class="nav-link active" style="font-family: 'NanumGothic';font-weight: bold;" href="https://www.instagram.com/dalandbyeolkr/">Instagram</a></li>
+                <li class="nav-item"><a class="nav-link" style="font-family: 'NanumGothic';font-weight: bold;" href="preparing.php">Coummunity</a></li>
             </ul>
 
         </div>
@@ -139,10 +147,13 @@ $batchDetail = mysqli_fetch_assoc($result_batch);
     <div class="container-xl px-4 px-lg-1">
         <div class="w-100" style="font-weight: bold;font-family: 'NanumGothic'">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+
                 <li class="nav-item"><a class="nav-link active text-warning" aria-current="page" href="#!">Korea Pasabuy</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="#!">Kpop</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="#!">Kmart</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="#!">Kmask</a></li>
+                <?php foreach ($categorytList as $category): ?>
+                    <tr>
+                        <li class="nav-item"><a class="nav-link " aria-current="page" href="/?category=<?=$category['category_code']?>"><?=$category['category_name']?></a></li>
+                    </tr>
+                <?php endforeach; ?>
             </ul>
         </div>
     </div>

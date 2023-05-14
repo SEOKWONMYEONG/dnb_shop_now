@@ -3,7 +3,7 @@
 include $_SERVER['DOCUMENT_ROOT'] . "/common.php";
 
 // 메인배너 가져오기
-$sql_product = "SELECT * FROM product";
+$sql_product = "SELECT pt.*, ca.category_name FROM product pt LEFT JOIN category ca on ca.category_code = pt.category";
 $result_product = mysqli_query($conn,$sql_product);
 
 // 결과를 PHP 배열로 변환하여 JSON 형식으로 인코딩
@@ -70,7 +70,7 @@ while ($row = mysqli_fetch_assoc($result_product)) {
                         <img style="width: 100px;" src="/images/product/<?=$productList[$i]['filename']?>"/>
                     </td>
                     <td><?=$productList[$i]['code']?></td>
-                    <td><?=$productList[$i]['category']?></td>
+                    <td><?=$productList[$i]['category_name']?></td>
                     <td><?=$productList[$i]['name']?></td>
                     <td><?=$productList[$i]['price']?></td>
                     <td><?=$productList[$i]['saleprice']?></td>

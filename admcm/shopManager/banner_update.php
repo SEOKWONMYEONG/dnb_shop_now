@@ -9,6 +9,8 @@ $result_banner_main = mysqli_query($conn,$sql_banner_main);
 $mainBannerDetail = array();
 $mainBannerDetail = mysqli_fetch_assoc($result_banner_main);
 
+
+
 ?>
 
 <div>

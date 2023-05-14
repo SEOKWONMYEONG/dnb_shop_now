@@ -34,6 +34,15 @@ while ($row = mysqli_fetch_assoc($result_product)) {
     $productList[] = $row;
 }
 
+// 카테고리 가져오기
+$sql_category = "SELECT * FROM category";
+$result_category = mysqli_query($conn,$sql_category);
+
+$categorytList = array();
+while ($row = mysqli_fetch_assoc($result_category)) {
+    $categorytList[] = $row;
+}
+
 ?>
 
 <!doctype html>
@@ -102,9 +111,9 @@ while ($row = mysqli_fetch_assoc($result_product)) {
 
         <div class="collapse navbar-collapse text-lg-end" id="navbarSupportedContent">
             <ul class="navbar-nav me-4o mb-2 mb-lg-0 ms-lg-auto ">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" style="font-family: 'NanumGothic';font-weight: bold;" href="#!">Facebook</a></li>
-                <li class="nav-item"><a class="nav-link" style="font-family: 'NanumGothic';font-weight: bold;" href="#!">Instagram</a></li>
-                <li class="nav-item"><a class="nav-link" style="font-family: 'NanumGothic';font-weight: bold;" href="#!">Coummunity</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" style="font-family: 'NanumGothic';font-weight: bold;" href="https://www.facebook.com/dalandbyeol">Facebook</a></li>
+                <li class="nav-item"><a class="nav-link active" style="font-family: 'NanumGothic';font-weight: bold;" href="https://www.instagram.com/dalandbyeolkr/">Instagram</a></li>
+                <li class="nav-item"><a class="nav-link" style="font-family: 'NanumGothic';font-weight: bold;" href="preparing.php">Coummunity</a></li>
             </ul>
 
         </div>
@@ -131,19 +140,8 @@ while ($row = mysqli_fetch_assoc($result_product)) {
             </div>
             <?php }?>
         </div>
-
-<!--        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">-->
-<!--            <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
-<!--            <span class="visually-hidden">Previous</span>-->
-<!--        </button>-->
-<!--        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">-->
-<!--            <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
-<!--            <span class="visually-hidden">Next</span>-->
-<!--        </button>-->
     </div>
 </div>
-
-
 
 <!--<div class="w-100 text-lg-center mt-lg-5">-->
 <!--    <h2 style="font-weight: bold;"> Welcome To Dal&Byeol</h2>-->
@@ -154,9 +152,12 @@ while ($row = mysqli_fetch_assoc($result_product)) {
         <div class="w-100" style="font-weight: bold;font-family: 'NanumGothic'">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link active text-warning" aria-current="page" href="/">Korea Pasabuy</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="/?category=100">Kpop</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="/?category=200">Kmart</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="/?category=300">Kmask</a></li>
+                <?php foreach ($categorytList as $category): ?>
+                    <tr>
+                        <li class="nav-item"><a class="nav-link " aria-current="page" href="/?category=<?=$category['category_code']?>"><?=$category['category_name']?></a></li>
+                    </tr>
+                <?php endforeach; ?>
+
             </ul>
         </div>
     </div>
@@ -190,7 +191,7 @@ while ($row = mysqli_fetch_assoc($result_product)) {
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/product/productDetail.php?productCode=<?=$productList[$i]['idx']?>">View options</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/product/productDetail.php?productCode=<?=$productList[$i]['code']?>">View options</a></div>
                     </div>
                 </div>
             </div>
