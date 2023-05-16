@@ -19,6 +19,8 @@ if(isset($_GET['mode'])){
         session_destroy();
         header('Location: ../index.php');
         exit;
+    }elseif ($_GET['mode'] == "signup"){
+        header('Location: signup.php');
     }
 }
 ?>
@@ -92,7 +94,7 @@ body {
       <input type="password" name="password" placeholder="Password" required>
       <button type="submit" onclick="submitForm()">Login</button>
     </form>
-    <p>Not registered? <a href="#">Sign up</a></p>
+    <p>Not registered? <a href="./signup.php">Sign up</a></p>
   </div>
 </body>
 </html>
@@ -113,14 +115,13 @@ body {
             enctype: 'multipart/form-data',
 
             success : function(response) {
-                if(response ="Success"){
+                if(response == "Success"){
                     alert("LOGIN Success");
                     window.location.href = "../index.php";
                 }else{
                     alert(response);
+                    location.reload();
                 }
-
-
             },
             error : function(xhr, status, error) {
                 alert("에러 발생: " + error);

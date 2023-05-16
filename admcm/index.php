@@ -1,5 +1,14 @@
 <?php
     include $_SERVER['DOCUMENT_ROOT']."/common.php";
+
+    if (!isset($_SESSION['username'])) {
+        header('Location: ../login/index.php');
+    }
+    if (isset($_SESSION['isAdmin'])){
+        if ($_SESSION['isAdmin'] != "yes") {
+            header('Location: ../login/index.php');
+        }
+    }
 ?>
 
 

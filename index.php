@@ -80,8 +80,13 @@ while ($row = mysqli_fetch_assoc($result_category)) {
 
 <div class="w-100 pt-lg-3 pb-lg-1 bg-white">
     <div class="container-xl px-lg-1 text-lg-end text-right">
-        <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> LogIn </span></a> &middot;
-        <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> SignUp </span></a> &middot;
+        <?php if(isset($_SESSION['username'])){?>
+            <span>안녕하세요. <?=$_SESSION['username']?> 님</span>
+            <a href="/login/?mode=logout" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> Logout </span></a> &middot;
+        <?php }else{?>
+            <a href="/login/" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> LogIn </span></a> &middot;
+            <a href="/login/?mode=signup" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> SignUp </span></a> &middot;
+        <?php }?>
         <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> CustomerService </span></a> |
 
         <a href="preparing.php" ><img style="width: 25px;height: 25px" src="/images/heart.svg"/></a>
@@ -175,7 +180,7 @@ while ($row = mysqli_fetch_assoc($result_category)) {
                     <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                     <?php }?>
                     <!-- Product image-->
-                    <img class="card-img-top" src="/images/product/<?=$productList[$i]['filename']?>" alt="..." />
+                    <img class="card-img-top" src="/images/product/<?=$productList[$i]['filename']?>" alt="..." onerror="replaceMissingImage(this)" />
                     <!-- Product details-->
                     <div class="card-body p-4">
                         <div class="text-center">
