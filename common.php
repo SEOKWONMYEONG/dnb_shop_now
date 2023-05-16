@@ -1,5 +1,6 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT']."/config/dbcon.php";
+session_start();
 ?>
 
 
@@ -22,8 +23,16 @@ include $_SERVER['DOCUMENT_ROOT']."/config/dbcon.php";
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic.css" rel="stylesheet">
-<!--모름-->
+<!--//-->
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+<!--noimg 표시-->
+<script>
+    function replaceMissingImage(element) {
+        element.onerror = null; // Prevent infinite loop if "noimg" is also missing
+        element.src = '/images/noimg.jpg';
+    }
+</script>
 
 <?php
 // 접속 디바이스 종류 확인
