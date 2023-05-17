@@ -26,7 +26,7 @@ $sql_product = "SELECT * FROM product";
 if (isset($_GET['category'])){
     $sql_product = $sql_product." where category=".$_GET['category'];
 }
-
+$sql_product = $sql_product." ORDER BY idx DESC";
 $result_product = mysqli_query($conn,$sql_product);
 
 $productList = array();
@@ -206,7 +206,6 @@ while ($row = mysqli_fetch_assoc($result_category)) {
 </section>
 
 <footer class="py-5 bg-dark">
-
     <div class="container-xl"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
 </footer>
 

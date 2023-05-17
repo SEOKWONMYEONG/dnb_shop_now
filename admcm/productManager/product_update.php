@@ -2,12 +2,21 @@
 
 include $_SERVER['DOCUMENT_ROOT'] . "/common.php";
 
-// 메인배너 가져오기
+// 상품정보 가져오기
 $sql_product = "SELECT * FROM product where idx='".$_GET['idx']."'";
 $result_product = mysqli_query($conn,$sql_product);
 
 $productDetail = array();
 $productDetail = mysqli_fetch_assoc($result_product);
+
+// 상품옵션 가져오기
+$sql_productOption = "SELECT * FROM product_option WHERE fk_product ='$productDetail[code]' ORDER BY idx ASC";
+$result_productOption = mysqli_query($conn,$sql_productOption);
+
+$productOptionList = array();
+while ($row = mysqli_fetch_assoc($result_productOption)) {
+    $productOptionList[] = $row;
+}
 
 // 카테고리 가져오기
 $sql_category = "SELECT * FROM category";
@@ -19,6 +28,60 @@ while ($row = mysqli_fetch_assoc($result_category)) {
 }
 
 ?>
+
+<style>
+    #option-container {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    #option-container div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    #option-container input[type="text"] {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    #option-container button {
+        background-color: #ccc;
+        color: #333;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    #option-container button:hover {
+        background-color: #999;
+    }
+</style>
+<script>
+    // 옵션 추가 함수
+    function addOption() {
+        var optionContainer = document.getElementById('option-container');
+
+        var newOption = document.createElement('div');
+        newOption.innerHTML = `
+                <input type="text" name="options[]" placeholder="옵션명">
+                <button type="button" onclick="removeOption(this)">제거</button>
+            `;
+
+        optionContainer.appendChild(newOption);
+    }
+
+    // 옵션 제거 함수
+    function removeOption(button) {
+        var optionContainer = document.getElementById('option-container');
+        var optionDiv = button.parentNode;
+
+        optionContainer.removeChild(optionDiv);
+    }
+</script>
+
 
 <div>
 
@@ -36,7 +99,7 @@ while ($row = mysqli_fetch_assoc($result_category)) {
                     <tr>
                         <td>Code</td>
                         <td>
-                            <input type="text" name="code" value="<?=$productDetail['code']?>" >
+                            <input type="text" name="code" value="<?=$productDetail['code']?>" readonly>
                         </td>
                     </tr>
                     <tr>
@@ -74,6 +137,22 @@ while ($row = mysqli_fetch_assoc($result_category)) {
                         <td>Currency</td>
                         <td>
                             <input type="text" name="currency" value="<?=$productDetail['currency']?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Option Setting</td>
+                        <td>
+
+                            <div id="option-container">
+                                <!-- 초기 옵션 입력란 -->
+                                <?php foreach ( $productOptionList as $productOption ){?>
+                                    <div>
+                                        <input type="text" name="options[]" placeholder="옵션명" value="<?=$productOption['option_name']?>">
+                                        <button type="button" onclick="removeOption(this)">제거</button>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                            <button type="button" onclick="addOption()">옵션 추가</button>
                         </td>
                     </tr>
                     <tr>

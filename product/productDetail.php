@@ -10,7 +10,7 @@ $productDetail = array();
 $productDetail = mysqli_fetch_assoc($result_product);
 
 // 제품옵션 가져오기
-$sql_product_option = "SELECT * FROM product_option where fk_product ='".$productDetail['code']."'";
+$sql_product_option = "SELECT * FROM product_option where fk_product ='".$productDetail['code']."' ORDER BY idx ASC";
 $result_product_option = mysqli_query($conn,$sql_product_option);
 
 $productOptionDetail = array();
@@ -103,10 +103,15 @@ while ($row = mysqli_fetch_assoc($result_category)) {
 
 <div class="w-100 pt-lg-3 pb-lg-1 bg-white">
     <div class="container-xl px-lg-1 text-lg-end text-right">
-        <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> LogIn </span></a> &middot;
-        <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> SignUp </span></a> &middot;
-        <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> CustomerService </span></a> |
+        <?php if(isset($_SESSION['username'])){?>
+            <span>안녕하세요. <?=$_SESSION['username']?> 님</span>
+            <a href="/login/?mode=logout" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> Logout </span></a> &middot;
+        <?php }else{?>
+            <a href="/login/" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> LogIn </span></a> &middot;
+            <a href="/login/?mode=signup" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> SignUp </span></a> &middot;
+        <?php }?>
 
+        <a href="preparing.php" style="color: black; font-size: 13px;font-family: 'NanumGothic';font-weight: bold;"><span> CustomerService </span></a> |
         <a href="preparing.php" ><img style="width: 25px;height: 25px" src="/images/heart.svg"/></a>
         <a href="preparing.php" ><img style="width: 25px;height: 25px" src="/images/truck.svg"/></a>
         <a href="preparing.php" ><img style="width: 25px;height: 25px" src="/images/cart.svg"/></a>

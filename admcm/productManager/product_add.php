@@ -10,6 +10,12 @@ $categorytList = array();
 while ($row = mysqli_fetch_assoc($result_category)) {
     $categorytList[] = $row;
 }
+
+//상품코드 가져오기
+$sql_productCode = "SELECT MAX(idx) AS max_idx FROM product";
+$result_productCode = mysqli_query($conn,$sql_productCode);
+$productCode = mysqli_fetch_assoc($result_productCode);
+
 ?>
 
 <div>
@@ -19,6 +25,58 @@ while ($row = mysqli_fetch_assoc($result_category)) {
 </div>
 
 
+<style>
+    #option-container {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    #option-container div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    #option-container input[type="text"] {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    #option-container button {
+        background-color: #ccc;
+        color: #333;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    #option-container button:hover {
+        background-color: #999;
+    }
+</style>
+<script>
+    // 옵션 추가 함수
+    function addOption() {
+        var optionContainer = document.getElementById('option-container');
+
+        var newOption = document.createElement('div');
+        newOption.innerHTML = `
+                <input type="text" name="options[]" placeholder="옵션명">
+                <button type="button" onclick="removeOption(this)">제거</button>
+            `;
+
+        optionContainer.appendChild(newOption);
+    }
+
+    // 옵션 제거 함수
+    function removeOption(button) {
+        var optionContainer = document.getElementById('option-container');
+        var optionDiv = button.parentNode;
+
+        optionContainer.removeChild(optionDiv);
+    }
+</script>
 <div class="container-xl px-5 mt-4">
     <h2>ADD Prodcut</h2>
     <div class="w-100" style="text-align: center;">
@@ -27,7 +85,7 @@ while ($row = mysqli_fetch_assoc($result_category)) {
                     <tr>
                         <td>Code</td>
                         <td>
-                            <input type="text" name="code" value="" >
+                            <input type="text" name="code" value="<?=($productCode['max_idx']+1)?>" >
                         </td>
                     </tr>
                     <tr>
@@ -65,6 +123,18 @@ while ($row = mysqli_fetch_assoc($result_category)) {
                         <td>Currency</td>
                         <td>
                             <input type="text" name="currency" value="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Option Setting</td>
+                        <td>
+                        <div id="option-container">
+                            <!-- 초기 옵션 입력란 -->
+                            <div>
+                                <input type="text" name="options[]" placeholder="옵션명">
+                            </div>
+                        </div>
+                        <button type="button" onclick="addOption()">옵션 추가</button>
                         </td>
                     </tr>
                     <tr>
