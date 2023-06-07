@@ -32,3 +32,5 @@
 
 </body>
 </html>
+
+<?php include $_SERVER['DOCUMENT_ROOT']."/admcm/left.php"; ?>

@@ -1,6 +1,7 @@
 <?php
 
 include $_SERVER['DOCUMENT_ROOT'] . "/common.php";
+include $_SERVER['DOCUMENT_ROOT']."/admcm/left.php";
 
 // 메인배너 가져오기
 $sql_banner_main = "SELECT * FROM banner_main";
@@ -18,41 +19,52 @@ while ($row = mysqli_fetch_assoc($result_banner_main)) {
     <?php include "../header.php"?>
 </div>
 
-<div class="container-xl mt-4">
-    <h2>메인배너 ( 1920 x 600 )</h2>
-    <table width="100%" border="0" cellspacing="0" cellpadding="2">
-        <tr>
-            <td style="font-weight: bold;">Main Banner List</td>
-            <td align="right">
-                <button onclick="window.location.href='./banner_add.php'" >Add Banner</button>
-            </td>
-        </tr>
-    </table>
-    <table width="100%">
-        <tr style="border: blanchedalmond 2px solid; text-align: center;height: 50px;" >
-            <th width="100px">Banner Code</th>
-            <th width="700px">Banner Image</th>
-            <th width="100px">Filename</th>
-            <th width="auto">Function</th>
-        </tr>
-        <?php for ($i=0;$i < count($banner_main);$i++){?>
-            <tr style="border: blanchedalmond 2px solid; text-align: center;" >
-                <input type="hidden" value="<?=$banner_main[$i]['idx']?>"/>
-                <td><?=$banner_main[$i]['code']?></td>
-                <td>
-                    <img style="width: 500px;" src="/images/banner_main/<?=$banner_main[$i]['filename']?>"/>
-                </td>
-                <td>
-                    <?=$banner_main[$i]['filename']?>
-                </td>
-                <td>
-                    <button onclick="window.location.href='./banner_update.php?idx=<?=$banner_main[$i]['idx']?>'">수정</button>
-                    <button onclick="submitForm(<?=$banner_main[$i]['idx']?>,'main_banner_delete')">삭제</button>
+<style>
+    section {
+        margin-left: 200px; /* 왼쪽 메뉴 너비와 동일하게 설정 */
+        margin-top: 50px;
+        padding: 20px;
+
+    }
+</style>
+<section>
+    <div class="container-xl mt-4">
+        <h2>메인배너 ( 1920 x 600 )</h2>
+        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+            <tr>
+                <td style="font-weight: bold;">Main Banner List</td>
+                <td align="right">
+                    <button onclick="window.location.href='./banner_add.php'" >Add Banner</button>
                 </td>
             </tr>
-        <?php }?>
-    </table>
+        </table>
+        <table width="100%">
+            <tr style="border: blanchedalmond 2px solid; text-align: center;height: 50px;" >
+                <th width="100px">Banner Code</th>
+                <th width="700px">Banner Image</th>
+                <th width="100px">Filename</th>
+                <th width="auto">Function</th>
+            </tr>
+            <?php for ($i=0;$i < count($banner_main);$i++){?>
+                <tr style="border: blanchedalmond 2px solid; text-align: center;" >
+                    <input type="hidden" value="<?=$banner_main[$i]['idx']?>"/>
+                    <td><?=$banner_main[$i]['code']?></td>
+                    <td>
+                        <img style="width: 500px;" src="/images/banner_main/<?=$banner_main[$i]['filename']?>"/>
+                    </td>
+                    <td>
+                        <?=$banner_main[$i]['filename']?>
+                    </td>
+                    <td>
+                        <button onclick="window.location.href='./banner_update.php?idx=<?=$banner_main[$i]['idx']?>'">수정</button>
+                        <button onclick="submitForm(<?=$banner_main[$i]['idx']?>,'main_banner_delete')">삭제</button>
+                    </td>
+                </tr>
+            <?php }?>
+        </table>
 </div>
+</section>
+
 <script>
     function submitForm(idx,mode) {
         var form = $("#bannerForm");
